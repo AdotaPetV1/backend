@@ -1,0 +1,58 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "description" : "Documentação da API do AdotaPet",
+        "version":"1.0.0",
+        "title":"Adota Pet API",
+        "contact":{
+            "name":"Lucas Vilas Boas Lage",
+            "email":"lucasvilasboaslage@gmail.com"
+        }
+    },
+    "schemes": ["http"],
+    "components": {
+        "securitySchemes":{
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer", 
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "tags":[
+        {
+          "name":"Authentication",
+          "description": "Rota para autenticação do usuário e geração do Bearer Token"
+        },
+        {
+            "name":"User",
+            "description": "Rota para Usuário"
+        }],
+    "paths" :{
+        "/user/register":{
+            "get" : {
+                "summary" : "Realizar o cadastro do usuário",
+                "tags":["User"],
+                "produces": ["application/json"],
+                "security": [{
+                    "bearerAuth":[]
+                }],
+                "parameters": [
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                   "$ref": ""
+                                }
+                             }
+                         }
+                    }
+                }
+            }
+        }
+    }
+}
