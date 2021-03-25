@@ -1,4 +1,4 @@
-export default class AnimalRegisterDTO{
+export class AnimalRegisterDTO{
     Nome!: string;
     Raca!: String;
     Porte!: String;
@@ -10,3 +10,4 @@ export default class AnimalRegisterDTO{
     Castrado!: BinaryType;
     VacinacaoEmDia!: BinaryType;   
 }
+

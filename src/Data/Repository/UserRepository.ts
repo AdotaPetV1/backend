@@ -1,4 +1,4 @@
-import UserRegisterDTO from '../../Domain/DTO/UserDTO';
+import { UserRegisterDTO, UserLoginDTO } from '../../Domain/DTO/UserDTO';
 import { knex } from '../Database/ConfigDataBase';
 
 export async function Register(user: UserRegisterDTO){
@@ -8,7 +8,7 @@ export async function Register(user: UserRegisterDTO){
         knex.initialize();
 
         const IdUsuario = await knex("Usuario").insert(user).returning('IdUsuario');
-
+        console.log(IdUsuario);
         return {
             valid: true,
             IdUsuario: IdUsuario[0]
@@ -16,7 +16,8 @@ export async function Register(user: UserRegisterDTO){
     }   
     catch(err)
     {
-        throw new Error("Ocorreu um erro ao cadastrar o usuário!");
+        console.log(err)
+        throw new Error("Ocorreu um erro ao cadastrar o usuário!" + err);
     }
     finally
     {
@@ -36,10 +37,10 @@ export async function ValidEmail(email: string){
             Email: email
         }).select('IdUsuario');
 
-        if(hasUser == null)
-            return true;
-        else
+        if(hasUser.length >= 1)
             return false;
+        else
+            return true;
     }
     catch(err){
 
@@ -60,10 +61,10 @@ export async function ValidCPF(CPF: string){
             CPF: CPF
         }).select('IdUsuario');
 
-        if(hasUser == null)
-            return true;
-        else
+        if(hasUser.length >= 1)
             return false;
+        else
+            return true;
     }
     catch(err){
 
@@ -72,4 +73,29 @@ export async function ValidCPF(CPF: string){
 
         knex.destroy();
     }   
+}
+
+export async function Login(user: UserLoginDTO){
+
+    try{
+
+        knex.initialize();
+
+        const result = await knex('Usuario').where({
+            Email : user.Email,
+            Senha : user.Senha
+        });
+
+        console.log(result);
+
+        return result;
+
+    }
+    catch(err){
+
+    }
+    finally{
+        
+        knex.destroy();
+    }
 }

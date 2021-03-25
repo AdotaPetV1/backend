@@ -1,27 +1,25 @@
-    import express from 'express';
-    import { validation } from '../Middleware/Authentication/Auth';
-    import { PostUser } from '../Services/UserService';
+import express from 'express';
+import { PostUser } from '../Services/UserService';
+const router = express.Router();
 
-    const router = express.Router();
-
-    //router.use(validation);
+router.post('/register', async(req, res) =>{
+    const response = await PostUser(req.body);
     
-    router.post('/register', async(req, res) =>{
+    if(response.statusCode == 201)
+    {
+        res.status(201).send({
+            IdUsuario: response.IdUsuario,
+            message: response.message
+        })
+    }
+    else{
+        res.status(response.statusCode).send({
+            message: response.message
+        })
+    }
+});
 
-        const response = await PostUser(req.body);
-        
-        if(response.statusCode == 201)
-        {
-            res.status(201).send({
-                IdUsuario: response.IdUsuario,
-                message: response.message
-            })
-        }
-        else{
-            res.status(response.statusCode).send({
-                message: response.message
-            })
-        }
-    });
-
-    module.exports = router;
+router.get('/login', async(req,res) =>{
+    
+});
+module.exports = router;

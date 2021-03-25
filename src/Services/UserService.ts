@@ -1,22 +1,23 @@
-import UserRegisterDTO from "../Domain/DTO/UserDTO";
-import { Register,ValidEmail,ValidCPF } from "../Data/Repository/UserRepository";
+import  { UserRegisterDTO, UserLoginDTO }  from "../Domain/DTO/UserDTO";
+import { Register,ValidEmail,ValidCPF, Login } from "../Data/Repository/UserRepository";
 
 export async function PostUser(user: UserRegisterDTO) {
     try
     {
-        if(await ValidEmail(user.Email) == false){
-            return{
-                statusCode: 200,
-                message: "E-mail já cadastrado na base de dados!"
-            }
-        }
+        // console.log(await ValidEmail(user.Email))
+        // if(await ValidEmail(user.Email) == false){
+        //     return{
+        //         statusCode: 200,
+        //         message: "E-mail já cadastrado na base de dados!"
+        //     }
+        // }
 
-        if(await ValidCPF(user.CPF) == false){
-            return{
-                statusCode: 200,
-                message: "CPF já cadastrado na base de dados!"
-            }
-        }
+        // if(await ValidCPF(user.CPF) == false){
+        //     return{
+        //         statusCode: 200,
+        //         message: "CPF já cadastrado na base de dados!"
+        //     }
+        // }
                 
         const result = await Register(user);
 
@@ -35,9 +36,31 @@ export async function PostUser(user: UserRegisterDTO) {
         }
     }
     catch(err){
+        console.log(err)
         return{
             statusCode: 500,
             message: "Ocorreu um erro ao cadastrar o usuário!"
+        }
+    }
+}
+
+export async function DoLogin(user: UserLoginDTO){
+
+    try{
+
+        const result = await Login(user);
+
+        if(result.length > 1){
+            return {
+                statusCode: 201,
+                message: "Usuário autenticado com sucesso!"
+            }
+        }
+    }
+    catch(err){
+        return{
+            statusCode: 500,
+            message: "Ocorreu um erro ao realizar o login!"
         }
     }
 }

@@ -10,6 +10,7 @@ const SwaggerDocument = require('./Middleware/Configuration/SwaggerOptions.json'
 const application = express();
 
 const UserController = require('./Controller/UserController');
+const AnimalController = require('./Controller/AnimalController');
 
 application.use(cors());
 application.use(bodyParser.json());
@@ -20,5 +21,6 @@ application.use('/api/docs', SwaggerUI.serve, SwaggerUI.setup(SwaggerDocument));
 
 // Rotas da aplicação
 application.use('/api/user',UserController);
+application.use('/api/animal', AnimalController);
 
 module.exports = application;
