@@ -5,8 +5,6 @@ export async function Register(user: UserRegisterDTO){
 
     try{
 
-        knex.initialize();
-
         const IdUsuario = await knex("Usuario").insert(user).returning('IdUsuario');
         console.log(IdUsuario);
         return {
@@ -19,19 +17,11 @@ export async function Register(user: UserRegisterDTO){
         console.log(err)
         throw new Error("Ocorreu um erro ao cadastrar o usuário!" + err);
     }
-    finally
-    {
-        knex.destroy();
-    }
-
 }
-
 
 export async function ValidEmail(email: string){
 
     try{
-
-        knex.initialize();
 
         const hasUser = await knex('Usuario').where({
             Email: email
@@ -43,19 +33,13 @@ export async function ValidEmail(email: string){
             return true;
     }
     catch(err){
-
+        throw err;
     }
-    finally{
-
-        knex.destroy();
-    }   
 }
 
 export async function ValidCPF(CPF: string){
 
     try{
-
-        knex.initialize();
 
         const hasUser = await knex('Usuario').where({
             CPF: CPF
@@ -67,19 +51,14 @@ export async function ValidCPF(CPF: string){
             return true;
     }
     catch(err){
-
+        throw err;
     }
-    finally{
 
-        knex.destroy();
-    }   
 }
 
 export async function Login(user: UserLoginDTO){
 
     try{
-
-        knex.initialize();
 
         const result = await knex('Usuario').where({
             Email : user.Email,
@@ -92,10 +71,7 @@ export async function Login(user: UserLoginDTO){
 
     }
     catch(err){
-
+        throw err;
     }
-    finally{
-        
-        knex.destroy();
-    }
+    
 }

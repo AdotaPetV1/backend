@@ -1,25 +1,20 @@
 import express from 'express';
-import { PostUser } from '../Services/UserService';
+import { PostUser, DoLogin } from '../Services/UserService';
 const router = express.Router();
 
 router.post('/register', async(req, res) =>{
     const response = await PostUser(req.body);
     
-    if(response.statusCode == 201)
-    {
-        res.status(201).send({
-            IdUsuario: response.IdUsuario,
-            message: response.message
-        })
-    }
-    else{
-        res.status(response.statusCode).send({
-            message: response.message
-        })
-    }
+    res.status(response.statusCode).send({
+        data: response.data
+    })
 });
 
 router.get('/login', async(req,res) =>{
-    
+    const response = await DoLogin(req.body);
+    res.status(response.statusCode).send({
+        data: response.data
+    })
 });
+
 module.exports = router;
