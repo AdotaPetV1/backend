@@ -6,7 +6,6 @@ export async function Register(user: UserRegisterDTO){
     try{
 
         const IdUsuario = await knex("Usuario").insert(user).returning('IdUsuario');
-        console.log(IdUsuario);
         return {
             valid: true,
             IdUsuario: IdUsuario[0]
@@ -14,8 +13,7 @@ export async function Register(user: UserRegisterDTO){
     }   
     catch(err)
     {
-        console.log(err)
-        throw new Error("Ocorreu um erro ao cadastrar o usuário!" + err);
+        throw "Ocorreu um erro ao cadastrar o usuário!" + err;
     }
 }
 
@@ -65,13 +63,11 @@ export async function Login(user: UserLoginDTO){
             Senha : user.Senha
         });
 
-        console.log(result);
-
         return result;
 
     }
     catch(err){
         throw err;
     }
-    
+
 }

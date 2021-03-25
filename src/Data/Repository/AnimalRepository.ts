@@ -14,7 +14,6 @@ export async function Index(UF: string){
 
     }
     catch(err){
-        console.log(err);
         throw err;
     }
     finally{

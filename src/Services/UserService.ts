@@ -47,7 +47,6 @@ export async function PostUser(user: UserRegisterDTO) {
         }
     }
     catch(err){
-        console.log(err)
         return{
             statusCode: 500,
             data:{

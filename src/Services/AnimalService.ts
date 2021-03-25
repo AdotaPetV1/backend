@@ -20,7 +20,6 @@ export async function GetAll(UF: string){
         }
     }
     catch(err){
-        console.log(err);
         return {
             statusCode: 500,
             message: "Ocorreu um erro ao buscar os animais!"
