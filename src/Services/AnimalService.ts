@@ -26,3 +26,12 @@ export async function GetAll(UF: string){
         }
     }
 }
+
+export async function UploadAnimalFile(file : File){
+    try{
+        console.log(file);
+    }
+    catch(err){
+
+    }
+}

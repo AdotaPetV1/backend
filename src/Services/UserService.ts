@@ -1,7 +1,6 @@
 import  { UserRegisterDTO, UserLoginDTO }  from "../Domain/DTO/UserDTO";
 import  { Register,ValidEmail,ValidCPF, Login } from "../Data/Repository/UserRepository";
 import  { OpenConnection, CloseConnection } from "../Data/Database/UtilsDataBase";
-import e from "express";
 
 export async function PostUser(user: UserRegisterDTO) {
     try
