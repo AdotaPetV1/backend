@@ -1,4 +1,5 @@
 import express from 'express';
+
 const multer = require('multer');
 const parser = multer({ dest: 'public/uploads/' })
 const router = express.Router();
@@ -20,7 +21,7 @@ router.get('/animal/{id}', async(req,res) =>{
 });
 
 router.post('/animal', async(req,res)=>{
-    
+
     const result = await PostAnimal(req.body);
 
     res.status(result.statusCode).send({
