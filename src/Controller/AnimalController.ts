@@ -2,9 +2,10 @@ import express from 'express';
 const multer = require('multer');
 const parser = multer({ dest: 'public/uploads/' })
 const router = express.Router();
-import { GetAll, UploadAnimalFile } from '../Services/AnimalService';
+import { GetAll, PostAnimal } from '../Services/AnimalService';
+import { AnimalRegisterDTO } from '../Domain/DTO/AnimalDTO';
 
-router.get('/Animal', async(req,res)=>{
+router.get('/animal', async(req,res)=>{
     const { UF }  = req.body;
     const result = await GetAll(UF);
     
@@ -14,15 +15,22 @@ router.get('/Animal', async(req,res)=>{
     });
 });
 
-router.get('/Animal/{id}', async(req,res) =>{
+router.get('/animal/{id}', async(req,res) =>{
 
 });
 
-router.post('/Animal', async(req,res)=>{
+router.post('/animal', async(req,res)=>{
+    
+    const result = await PostAnimal(req.body);
+
+    res.status(result.statusCode).send({
+        data: result.data,
+        message: result.message
+    });
 
 });
 
-router.put('/Animal', async(req,res) =>{
+router.put('/animal', async(req,res) =>{
 
 });
 

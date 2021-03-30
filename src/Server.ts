@@ -26,7 +26,7 @@ application.use(bodyParser.urlencoded({extended: false}));
 application.use('/api/docs', SwaggerUI.serve, SwaggerUI.setup(SwaggerDocument));
 
 // Rotas da aplicação
-application.use('/api/user',UserController);
-application.use('/api/animal', AnimalController);
+application.use('/api',UserController);
+application.use('/api', AnimalController);
 
 module.exports = application;

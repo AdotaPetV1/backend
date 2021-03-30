@@ -1,5 +1,6 @@
 import { AnimalRegisterDTO } from "../Domain/DTO/AnimalDTO";
-import { Index } from "../Data/Repository/AnimalRepository";
+import { Index, Post } from "../Data/Repository/AnimalRepository";
+import { IsNullOrEmpty,IsStringNullOrEmpty } from "../Middleware/Utils/Validators";
 
 export async function GetAll(UF: string){
 
@@ -27,11 +28,37 @@ export async function GetAll(UF: string){
     }
 }
 
-export async function UploadAnimalFile(file : File){
+export async function PostAnimal(Animal : AnimalRegisterDTO){
     try{
-        console.log(file);
+
+        console.log("Oi");
+        if(IsStringNullOrEmpty(Animal.Nome))
+            return {  statusCode: 400, message : "O campo Nome não pode ser nulo!" }
+
+        if(IsNullOrEmpty(Animal.Idade))
+            return { statusCode: 400, message: "O campo Idade não pode ser nulo!" }
+
+        if(IsNullOrEmpty(Animal.TipoAnimal))
+            return { statusCode: 400, message: "O campo TipoAnimal não pode ser nulo!" }
+
+        if(IsStringNullOrEmpty(Animal.IdOrgResponsavel))
+            return { statusCode: 400, message: "O campo IdOrgResponsavel não pode ser nulo!"}
+
+        //Caso não informe se o animal foi cadastrado vamos colocar como falso
+        if(IsNullOrEmpty(Animal.Castrado))
+            Animal.Castrado = false;
+
+        if(IsNullOrEmpty(Animal.VacinacaoEmDia))
+            Animal.VacinacaoEmDia = false;
+        
+        const result = await Post(Animal);
+
+        return { statusCode: 200, message: "Animal cadastrado com sucesso!", data: result }
     }
     catch(err){
-
+        return {
+            statusCode: 500,
+            message: `Ocorreu um erro ao cadastrar os animais! Erro: ${err.toString()}`
+        }
     }
 }

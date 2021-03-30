@@ -7,7 +7,8 @@ export class AnimalRegisterDTO{
     TipoAnimal!: String;
     Limitacoes!: String;
     Descricao!: String;
-    Castrado!: BinaryType;
-    VacinacaoEmDia!: BinaryType;   
+    Castrado!: boolean;
+    VacinacaoEmDia!: boolean;   
+    IdOrgResponsavel !: string;
 }
 
