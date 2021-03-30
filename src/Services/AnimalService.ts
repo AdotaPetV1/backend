@@ -31,7 +31,6 @@ export async function GetAll(UF: string){
 export async function PostAnimal(Animal : AnimalRegisterDTO){
     try{
 
-        console.log("Oi");
         if(IsStringNullOrEmpty(Animal.Nome))
             return {  statusCode: 400, message : "O campo Nome não pode ser nulo!" }
 
@@ -44,6 +43,9 @@ export async function PostAnimal(Animal : AnimalRegisterDTO){
         if(IsStringNullOrEmpty(Animal.IdOrgResponsavel))
             return { statusCode: 400, message: "O campo IdOrgResponsavel não pode ser nulo!"}
 
+        if(IsStringNullOrEmpty(Animal.Descricao))
+            Animal.Descricao = "Animal sem descrição";
+            
         //Caso não informe se o animal foi cadastrado vamos colocar como falso
         if(IsNullOrEmpty(Animal.Castrado))
             Animal.Castrado = false;

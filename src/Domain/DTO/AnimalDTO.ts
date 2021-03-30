@@ -1,12 +1,12 @@
 export class AnimalRegisterDTO{
     Nome!: string;
-    Raca!: String;
-    Porte!: String;
+    Raca!: string;
+    Porte!: string;
     Idade!: String;
-    Sexo!: String;
-    TipoAnimal!: String;
-    Limitacoes!: String;
-    Descricao!: String;
+    Sexo!: string;
+    TipoAnimal!: string;
+    Limitacoes!: string;
+    Descricao!: string;
     Castrado!: boolean;
     VacinacaoEmDia!: boolean;   
     IdOrgResponsavel !: string;
