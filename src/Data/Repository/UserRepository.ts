@@ -1,4 +1,5 @@
-import { UserRegisterDTO, UserLoginDTO } from '../../Domain/DTO/UserDTO';
+import  UserLoginDTO from '../../Domain/DTO/User/UserLoginDTO';
+import UserRegisterDTO from '../../Domain/DTO/User/UserRegisterDTO';
 import { knex } from '../Database/ConfigDataBase';
 
 export async function Register(user: UserRegisterDTO){

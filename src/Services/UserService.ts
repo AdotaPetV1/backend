@@ -1,4 +1,5 @@
-import  { UserRegisterDTO, UserLoginDTO }  from "../Domain/DTO/UserDTO";
+import  UserLoginDTO   from "../Domain/DTO/User/UserLoginDTO";
+import UserRegisterDTO from "../Domain/DTO/User/UserRegisterDTO";
 import  { Register,ValidEmail,ValidCPF, Login } from "../Data/Repository/UserRepository";
 import  { OpenConnection, CloseConnection } from "../Data/Database/UtilsDataBase";
 

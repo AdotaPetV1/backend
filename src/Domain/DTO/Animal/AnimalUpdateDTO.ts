@@ -1,4 +1,5 @@
-export class AnimalRegisterDTO{
+export default class AnimalUpdateDTO{
+    IdAnimal!: number;
     Nome!: string;
     Raca!: string;
     Porte!: string;
@@ -11,4 +12,3 @@ export class AnimalRegisterDTO{
     VacinacaoEmDia!: boolean;   
     IdOrgResponsavel !: string;
 }
-
