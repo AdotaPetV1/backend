@@ -1,6 +1,6 @@
 import { OngRegisterDTO } from "../Domain/DTO/Ong/OngRegisterDTO";
 import { OngLoginDTO } from "../Domain/DTO/Ong/OngLoginDTO";
-import { Register, ValidEmail, ValidCNPJ, Login } from "../Data/Repository/OngRepository";
+import { Register, ValidEmail, ValidCPF, Login } from "../Data/Repository/OngRepository";
 import { OpenConnection, CloseConnection } from "../Data/Database/UtilsDataBase";
 
 export async function PostOng(ong: OngRegisterDTO) {
@@ -11,16 +11,16 @@ export async function PostOng(ong: OngRegisterDTO) {
             return {
                 statusCode: 200,
                 data: {
-                    message: "E-mail já cadastrado na base de dados!"
+                    message: "E-mail já cadastrado!"
                 }
             }
         }
 
-        if (await ValidCNPJ(ong.CNPJ) == false) {
+        if (await ValidCPF(ong.CPF) == false) {
             return {
                 statusCode: 200,
                 data: {
-                    message: "CNPJ já cadastrado na base de dados!"
+                    message: "CPF já cadastrado!"
                 }
             }
         }
@@ -31,7 +31,7 @@ export async function PostOng(ong: OngRegisterDTO) {
             return {
                 statusCode: 201,
                 data: {
-                    message: "Ong cadastrada com Sucesso!",
+                    message: "Ong cadastrada!",
                     IdUsuario: result.IdOng
                 }
             }
@@ -40,7 +40,7 @@ export async function PostOng(ong: OngRegisterDTO) {
             return {
                 statusCode: 400,
                 data: {
-                    message: "Ocorreu um erro ao cadastrar a Ong!"
+                    message: "Erro ao cadastrar a Ong!"
                 }
             }
         }
@@ -49,7 +49,7 @@ export async function PostOng(ong: OngRegisterDTO) {
         return {
             statusCode: 500,
             data: {
-                message: "Ocorreu um erro ao cadastrar a Ong!"
+                message: "Erro ao cadastrar a Ong!"
             }
         }
     }
@@ -68,7 +68,7 @@ export async function DoLogin(ong: OngLoginDTO) {
             return {
                 statusCode: 200,
                 data: {
-                    message: "Ong autenticada com sucesso!",
+                    message: "Ong autenticada!",
                     user: result[0]
                 }
             }
@@ -77,7 +77,7 @@ export async function DoLogin(ong: OngLoginDTO) {
             return {
                 statusCode: 200,
                 data: {
-                    message: "Ong autenticada com sucesso!"
+                    message: "Ong autenticada!"
                 }
             }
         }
@@ -86,7 +86,7 @@ export async function DoLogin(ong: OngLoginDTO) {
         return {
             statusCode: 500,
             data: {
-                message: "Ocorreu um erro ao realizar o login!"
+                message: "Erro ao realizar login!"
             }
         }
     }

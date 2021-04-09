@@ -35,7 +35,7 @@ export async function ValidEmail(email: string) {
     }
 }
 
-export async function ValidCNPJ(CNPJ: string) {
+export async function ValidCPF(CNPJ: string) {
 
     try {
 
