@@ -1,13 +1,13 @@
 import { OngRegisterDTO } from "../Domain/DTO/Ong/OngRegisterDTO";
-import { OngLoginDTO } from "../Domain/DTO/Ong/OngLoginDTO";
-import { Register, ValidEmail, ValidCNPJ, Login } from "../Data/Repository/OngRepository";
+import { Register, ValidEmail as ValidOngEmail, ValidCNPJ, Login } from "../Data/Repository/OngRepository";
+import { ValidEmail as ValidUserEmail} from "../Data/Repository/UserRepository";
 import { OpenConnection, CloseConnection } from "../Data/Database/UtilsDataBase";
 
 export async function PostOng(ong: OngRegisterDTO) {
     try {
         OpenConnection();
 
-        if (await ValidEmail(ong.Email) == false) {
+        if (await !ValidOngEmail(ong.Email) || !ValidUserEmail(ong.Email)) {
             return {
                 statusCode: 200,
                 data: {
@@ -55,39 +55,5 @@ export async function PostOng(ong: OngRegisterDTO) {
     }
     finally {
         CloseConnection();
-    }
-}
-
-export async function DoLogin(ong: OngLoginDTO) {
-
-    try {
-
-        const result = await Login(ong);
-
-        if (result.length > 1) {
-            return {
-                statusCode: 200,
-                data: {
-                    message: "Ong autenticada com sucesso!",
-                    user: result[0]
-                }
-            }
-        }
-        else {
-            return {
-                statusCode: 200,
-                data: {
-                    message: "Ong autenticada com sucesso!"
-                }
-            }
-        }
-    }
-    catch (err) {
-        return {
-            statusCode: 500,
-            data: {
-                message: "Ocorreu um erro ao realizar o login!"
-            }
-        }
     }
 }

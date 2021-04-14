@@ -1,8 +1,9 @@
 import express from 'express';
-import { PostOng, DoLogin } from '../Services/OngService';
+import {Request,Response} from 'express';
+import { PostOng } from '../Services/OngService';
 const router = express.Router();
 
-router.post('/ong/register', async (req, res) => {
+router.post('/ong/register', async (req: Request, res: Response) => {
     const response = await PostOng(req.body);
 
     res.status(response.statusCode).send({
@@ -10,11 +11,5 @@ router.post('/ong/register', async (req, res) => {
     })
 });
 
-router.get('/user/login', async (req, res) => {
-    const response = await DoLogin(req.body);
-    res.status(response.statusCode).send({
-        data: response.data
-    })
-});
 
 module.exports = router;

@@ -1,14 +1,14 @@
-import  UserLoginDTO   from "../Domain/DTO/User/UserLoginDTO";
 import UserRegisterDTO from "../Domain/DTO/User/UserRegisterDTO";
-import  { Register,ValidEmail,ValidCPF, Login } from "../Data/Repository/UserRepository";
+import  { Register, ValidCPF } from "../Data/Repository/UserRepository";
 import  { OpenConnection, CloseConnection } from "../Data/Database/UtilsDataBase";
+import { ValidarEmail } from "../Middleware/Utils/Validators";
 
 export async function PostUser(user: UserRegisterDTO) {
     try
     {
         OpenConnection();
-
-        if(await ValidEmail(user.Email) == false){
+        let EmailValido = await ValidarEmail(user.Email);
+        if(!EmailValido){
             return{
                 statusCode: 200,
                 data : {
@@ -17,7 +17,8 @@ export async function PostUser(user: UserRegisterDTO) {
             }
         }
 
-        if(await ValidCPF(user.CPF) == false){
+        let CPFValido = await ValidCPF(user.CPF);
+        if(CPFValido == false){
             return{
                 statusCode: 200,
                 data : {
@@ -25,7 +26,9 @@ export async function PostUser(user: UserRegisterDTO) {
                 }
             }
         }
-                
+        if(user.UF.length >= 2)
+            return{ statusCode: 400, message: "Favor inserir uma UF no formato válido!" }
+
         const result = await Register(user);
 
         if(result.valid){
@@ -56,39 +59,5 @@ export async function PostUser(user: UserRegisterDTO) {
     }
     finally{
         CloseConnection();
-    }
-}
-
-export async function DoLogin(user: UserLoginDTO){
-
-    try{
-
-        const result = await Login(user);
-
-        if(result.length > 1){
-            return {
-                statusCode: 200,
-                data: {
-                    message: "Usuário autenticado com sucesso!",
-                    user: result[0]
-                }
-            }
-        }
-        else{
-            return{
-                statusCode: 200,
-                data: {
-                    message: "Usuário autenticado com sucesso!"
-                }
-            }
-        }
-    }
-    catch(err){
-        return{
-            statusCode: 500,
-            data: {
-                message: "Ocorreu um erro ao realizar o login!"
-            }
-        }
     }
 }

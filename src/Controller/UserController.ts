@@ -1,17 +1,11 @@
 import express from 'express';
-import { PostUser, DoLogin } from '../Services/UserService';
+import {Request,Response} from 'express';
+import { PostUser } from '../Services/UserService';
 const router = express.Router();
 
-router.post('/user/register', async(req, res) =>{
+router.post('/user/register', async(req: Request, res:Response) =>{
     const response = await PostUser(req.body);
     
-    res.status(response.statusCode).send({
-        data: response.data
-    })
-});
-
-router.get('/user/login', async(req,res) =>{
-    const response = await DoLogin(req.body);
     res.status(response.statusCode).send({
         data: response.data
     })

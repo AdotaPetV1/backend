@@ -1,4 +1,4 @@
-import { OngLoginDTO } from "../../Domain/DTO/Ong/OngLoginDTO";
+import LoginDTO from "../../Domain/DTO/Auth/LoginDTO";
 import { OngRegisterDTO } from "../../Domain/DTO/Ong/OngRegisterDTO";
 import { knex } from '../Database/ConfigDataBase';
 
@@ -6,7 +6,7 @@ export async function Register(ong: OngRegisterDTO) {
 
     try {
 
-        const IdOng = await knex("Ong").insert(ong).returning('IdOng');
+        const IdOng = await knex("Organizacao").insert(ong).returning('IdOng');
         return {
             valid: true,
             IdOng: IdOng[0]
@@ -21,9 +21,9 @@ export async function ValidEmail(email: string) {
 
     try {
 
-        const hasOng = await knex('Ong').where({
+        const hasOng = await knex('Organizacao').where({
             Email: email
-        }).select('IdOng');
+        }).select('IdOrg');
 
         if (hasOng.length >= 1)
             return false;
@@ -39,7 +39,7 @@ export async function ValidCNPJ(CNPJ: string) {
 
     try {
 
-        const hasOng = await knex('Ong').where({
+        const hasOng = await knex('Organizacao').where({
             CNPJ: CNPJ
         }).select('IdOng');
 
@@ -54,11 +54,11 @@ export async function ValidCNPJ(CNPJ: string) {
 
 }
 
-export async function Login(ong: OngLoginDTO) {
+export async function Login(ong: LoginDTO) {
 
     try {
 
-        const result = await knex('Ong').where({
+        const result = await knex('Organizacao').where({
             Email: ong.Email,
             Senha: ong.Senha
         });
@@ -70,4 +70,22 @@ export async function Login(ong: OngLoginDTO) {
         throw err;
     }
 
+}
+
+export async function  GetOngByID(IdOrg: number) {
+    
+    try{
+        knex.initialize();
+        
+        const result = await knex('Organizacao').where('IdOrg',IdOrg);
+
+        return result;
+    }
+    catch(err)
+    {
+        throw err;
+    }
+    finally{
+        knex.destroy();
+    }
 }

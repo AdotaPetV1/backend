@@ -84,7 +84,7 @@ export async function Update(Animal: AnimalUpdateDTO){
             Castrado : Animal.Castrado,
             VacinacaoEmDia : Animal.VacinacaoEmDia,
             IdOrgResponsavel : Animal.IdOrgResponsavel
-        })
+        });
 
     }
     catch(err){

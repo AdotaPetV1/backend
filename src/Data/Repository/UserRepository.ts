@@ -1,4 +1,4 @@
-import  UserLoginDTO from '../../Domain/DTO/User/UserLoginDTO';
+import LoginDTO from '../../Domain/DTO/Auth/LoginDTO';
 import UserRegisterDTO from '../../Domain/DTO/User/UserRegisterDTO';
 import { knex } from '../Database/ConfigDataBase';
 
@@ -6,7 +6,18 @@ export async function Register(user: UserRegisterDTO){
 
     try{
 
-        const IdUsuario = await knex("Usuario").insert(user).returning('IdUsuario');
+        const IdUsuario = await knex("Usuario").insert({
+            Nome : user.Nome,
+            CPF : user.CPF,
+            Email : user.Email,
+            Senha : user.Senha,
+            Numero : user.Numero,
+            Endereco : user.Endereco,
+            Municipio : user.Municipio,
+            CEP : user.CEP,
+            UF : user.UF
+        }).returning('IdUsuario');
+        
         return {
             valid: true,
             IdUsuario: IdUsuario[0]
@@ -55,7 +66,7 @@ export async function ValidCPF(CPF: string){
 
 }
 
-export async function Login(user: UserLoginDTO){
+export async function Login(user: LoginDTO){
 
     try{
 

@@ -9,9 +9,11 @@ const SwaggerDocument = require('./Middleware/Configuration/SwaggerOptions.json'
 
 const application = express();
 
+//Controllers
 const UserController = require('./Controller/UserController');
 const AnimalController = require('./Controller/AnimalController');
 const OngController = require('./Controller/OngController');
+const AuthController = require('./Controller/AuthController');
 
 // Enable CORS
 application.use(function (req, res, next) {
@@ -30,5 +32,6 @@ application.use('/api/docs', SwaggerUI.serve, SwaggerUI.setup(SwaggerDocument));
 application.use('/api', UserController);
 application.use('/api', AnimalController);
 application.use('/api', OngController);
+application.use('/api', AuthController);
 
 module.exports = application;
