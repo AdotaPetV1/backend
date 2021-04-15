@@ -1,6 +1,6 @@
 export class OngRegisterDTO {
     Nome!: string;
-    CNPJ!: string;
+    CPF!: string;
     Email!: string;
     Senha!: string;
     Numero!: string;
