@@ -26,6 +26,7 @@ export async function PostUser(user: UserRegisterDTO) {
                 }
             }
         }
+        
         if(user.UF.length >= 2)
             return{ statusCode: 400, message: "Favor inserir uma UF no formato válido!" }
 

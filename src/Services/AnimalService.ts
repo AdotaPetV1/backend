@@ -2,6 +2,8 @@ import  AnimalRegisterDTO from "../Domain/DTO/Animal/AnimalRegisterDTO";
 import { SelectAll,SelectByID, Post,Update,Delete } from "../Data/Repository/AnimalRepository";
 import AnimalUpdateDTO from "../Domain/DTO/Animal/AnimalUpdateDTO";
 import { IsNullOrEmpty,IsStringNullOrEmpty } from "../Middleware/Utils/Validators";
+import { GetOngByID } from "../Data/Repository/OngRepository";
+import { CloseConnection, OpenConnection } from "../Data/Database/UtilsDataBase";
 
 export async function GetAll(UF: string){
 
@@ -80,16 +82,27 @@ export async function PostAnimal(Animal : AnimalRegisterDTO){
         if(IsNullOrEmpty(Animal.VacinacaoEmDia))
             Animal.VacinacaoEmDia = false;
         
-        //implementar depois validação do IdOrg para ver se a Org existe
-        const result = await Post(Animal);
+        OpenConnection();
 
-        return { statusCode: 200, message: "Animal cadastrado com sucesso!", data: result }
+        const ONG = await GetOngByID(Animal.IdOrgResponsavel);
+
+        if(ONG != null){
+            const result = await Post(Animal);
+            return { statusCode: 200, message: "Animal cadastrado com sucesso!", data: result }
+        }
+        else{
+            return { statusCode: 400, message:"O ID de Ong informado não existe na nossa base de dados!"}
+        }
+        
     }
     catch(err){
         return {
             statusCode: 500,
             message: `Ocorreu um erro ao cadastrar os animais! Erro: ${err.toString()}`
         }
+    }
+    finally{
+        CloseConnection();
     }
 
 }

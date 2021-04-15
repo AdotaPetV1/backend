@@ -47,8 +47,6 @@ export async function Post(Animal : AnimalRegisterDTO) {
     
     try{
 
-        knex.initialize();
-
         const result = await knex("Animal").insert(Animal).returning('IdAnimal');
 
         return result;
@@ -57,12 +55,7 @@ export async function Post(Animal : AnimalRegisterDTO) {
     catch(err){
         throw err;
     }
-    finally{
 
-        knex.destroy();
-        
-    }
-    
 }
 
 export async function Update(Animal: AnimalUpdateDTO){

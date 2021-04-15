@@ -75,17 +75,15 @@ export async function Login(ong: LoginDTO) {
 export async function  GetOngByID(IdOrg: number) {
     
     try{
-        knex.initialize();
-        
+
         const result = await knex('Organizacao').where('IdOrg',IdOrg);
 
-        return result;
+        return result[0];
     }
     catch(err)
     {
         throw err;
     }
     finally{
-        knex.destroy();
     }
 }

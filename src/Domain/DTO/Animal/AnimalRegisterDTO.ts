@@ -9,5 +9,5 @@ export default class AnimalRegisterDTO{
     Descricao!: string;
     Castrado!: boolean;
     VacinacaoEmDia!: boolean;   
-    IdOrgResponsavel !: string;
+    IdOrgResponsavel !: number;
 }
