@@ -1,5 +1,6 @@
 import { OngRegisterDTO } from "../Domain/DTO/Ong/OngRegisterDTO";
-import { Register, ValidEmail as ValidOngEmail } from "../Data/Repository/OngRepository";
+import { OngUpdateDTO} from "../Domain/DTO/Ong/OngUpdateDTO";
+import { Register, ValidEmail as ValidOngEmail, Update } from "../Data/Repository/OngRepository";
 import { ValidCPF, ValidEmail as ValidUserEmail} from "../Data/Repository/UserRepository";
 import { OpenConnection, CloseConnection } from "../Data/Database/UtilsDataBase";
 
@@ -16,7 +17,7 @@ export async function PostOng(ong: OngRegisterDTO) {
             }
         }
 
-        if (await ValidCPF(ong.CPF) == false) {
+        if (await ValidCPF(ong.CNPJ) == false) {
             return {
                 statusCode: 200,
                 data: {
@@ -54,6 +55,33 @@ export async function PostOng(ong: OngRegisterDTO) {
         }
     }
     finally {
+        CloseConnection();
+    }
+}
+
+export async function PutOrg(Ong: OngUpdateDTO) {
+
+    try{
+        OpenConnection();
+
+        await Update(Ong);
+
+        return {
+            statusCode: 200,
+            data: {
+                message: "Ong atualizada com Sucesso!",
+            }
+        }
+    }
+    catch(err){
+        return {
+            statusCode: 500,
+            data: {
+                message: "Erro ao atualizar a Ong!"
+            }
+        }
+    }
+    finally{
         CloseConnection();
     }
 }

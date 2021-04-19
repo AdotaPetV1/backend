@@ -1,5 +1,6 @@
 import LoginDTO from "../../Domain/DTO/Auth/LoginDTO";
 import { OngRegisterDTO } from "../../Domain/DTO/Ong/OngRegisterDTO";
+import { OngUpdateDTO } from "../../Domain/DTO/Ong/OngUpdateDTO";
 import { knex } from '../Database/ConfigDataBase';
 
 export async function Register(ong: OngRegisterDTO) {
@@ -85,5 +86,36 @@ export async function  GetOngByID(IdOrg: number) {
         throw err;
     }
     finally{
+    }
+}
+
+export async function Update(Ong : OngUpdateDTO) {
+ 
+    try{
+
+        await knex('Organizacao')
+        .where({ IdOrg : Ong.IdOrg}).update({
+            Nome: Ong.Nome,
+            CNPJ: Ong.CNPJ,
+            Email: Ong.Email,
+            Senha: Ong.Senha,
+            Numero: Ong.Numero,
+            Site: Ong.Site,
+            Instagram: Ong.Instagram,
+            Facebook: Ong.Facebook,
+            Vakaquinha: Ong.Vakaquinha,
+            Endereco: Ong.Endereco,
+            Municipio: Ong.Municipio,
+            CEP: Ong.CEP,
+            UF: Ong.UF,
+            CaixaPostal: Ong.CaixaPostal
+        });
+        
+    }
+    catch(err){
+        throw err;
+    }
+    finally{
+
     }
 }
