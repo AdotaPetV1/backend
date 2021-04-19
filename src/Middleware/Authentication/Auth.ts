@@ -1,4 +1,6 @@
-const secret = 'AdotaPet';
+//Isso aqui tinha que tá no .ENV, mas por algum motivo dá um erro na hora de puxar ele.
+
+const secret = 'AdotaPet'; 
 const jwt = require('jsonwebtoken');
 import { Request, Response } from 'express';
 
