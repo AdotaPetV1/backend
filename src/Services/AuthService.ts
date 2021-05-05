@@ -4,6 +4,7 @@ import { Login as LoginUser} from "../Data/Repository/UserRepository";
 import LoginDTO from "../Domain/DTO/Auth/LoginDTO";
 import { GenerateToken } from "../Middleware/Authentication/Auth";
 import {CloseConnection, OpenConnection } from "../Data/Database/UtilsDataBase";
+
 export async function DoLogin(user: LoginDTO){
 
     try{

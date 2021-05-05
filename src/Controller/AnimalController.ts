@@ -1,7 +1,6 @@
 import express from 'express';
 import {Request,Response} from 'express';
 const multer = require('multer');
-const parser = multer({ dest: 'public/uploads/' })
 const router = express.Router();
 import { GetAll, PostAnimal,GetAnimalByID,DeleteAnimal,UpdateAnimal } from '../Services/AnimalService';
 import { ValidateToken } from '../Middleware/Authentication/Auth';
