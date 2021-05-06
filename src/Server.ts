@@ -3,6 +3,11 @@ import express from 'express';
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+<<<<<<< HEAD
+const nodemailer = require('nodemailer');
+
+=======
+>>>>>>> 4707a4647f2454e43dc4e49a4d31a9bb61b21a80
 
 //Documentação
 const SwaggerUI = require('swagger-ui-express');
