@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import UserRegisterDTO from "../Domain/DTO/User/UserRegisterDTO";
 import UserUpdateDTO from "../Domain/DTO/User/UserUpdateDTO"
 import { Register, ValidCPF } from "../Data/Repository/UserRepository";
@@ -6,12 +6,8 @@ import { OpenConnection, CloseConnection } from "../Data/Database/UtilsDataBase"
 import { ValidarEmail } from "../Middleware/Utils/Validators";
 import { IsNullOrEmpty, IsStringNullOrEmpty } from "../Middleware/Utils/Validators";
 import { Update } from "../Data/Repository/UserRepository"
-=======
-import  UserRegisterDTO from "../Domain/DTO/User/UserRegisterDTO";
-import  { Register, ValidCPF } from "../Data/Repository/UserRepository";
-import  { OpenConnection, CloseConnection } from "../Data/Database/UtilsDataBase";
-import  { ValidarEmail } from "../Middleware/Utils/Validators";
->>>>>>> 4707a4647f2454e43dc4e49a4d31a9bb61b21a80
+
+
 
 export async function PostUser(user: UserRegisterDTO) {
     try {

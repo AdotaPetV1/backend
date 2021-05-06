@@ -84,7 +84,7 @@ export async function Login(user: LoginDTO) {
 
 }
 
-<<<<<<< HEAD
+
 export async function Update(Usuario: UserUpdateDTO) {
 
     try {
@@ -112,20 +112,21 @@ export async function Update(Usuario: UserUpdateDTO) {
     finally {
         knex.destroy();
     }
-=======
-export async function FindUserByEmail(email: string){
 
-    try{
+
+}
+
+export async function FindUserByEmail(email: string) {
+
+    try {
         const user = await knex('Usuario').column('IdUsuario', 'Nome', 'Email')
-        .where({Email : email})
-        .select();
-    
+            .where({ Email: email })
+            .select();
+
         return user[0];
     }
-    catch(err)
-    {
+    catch (err) {
         throw err;
     }
 
->>>>>>> 4707a4647f2454e43dc4e49a4d31a9bb61b21a80
 }
