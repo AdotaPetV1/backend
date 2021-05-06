@@ -1,6 +1,8 @@
 import express  from 'express';
 import { Request,Response } from 'express';
 import { DoLogin } from '../Services/AuthService';
+import { ForgotPassword } from "../Services/AuthService";
+
 const router = express.Router();
 
 router.get('/auth/login', async(req: Request,res: Response) =>{
@@ -10,4 +12,12 @@ router.get('/auth/login', async(req: Request,res: Response) =>{
     })
 });
 
+router.get('/user/forgotPassword', async(req : Request, res: Response) =>{
+    const { email }  =  req.body;
+
+    const response = await ForgotPassword(email);
+    res.status(response.statusCode).send({
+        data: response.data
+    })
+});
 module.exports = router;

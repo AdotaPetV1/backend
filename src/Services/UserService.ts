@@ -1,7 +1,7 @@
-import UserRegisterDTO from "../Domain/DTO/User/UserRegisterDTO";
+import  UserRegisterDTO from "../Domain/DTO/User/UserRegisterDTO";
 import  { Register, ValidCPF } from "../Data/Repository/UserRepository";
 import  { OpenConnection, CloseConnection } from "../Data/Database/UtilsDataBase";
-import { ValidarEmail } from "../Middleware/Utils/Validators";
+import  { ValidarEmail } from "../Middleware/Utils/Validators";
 
 export async function PostUser(user: UserRegisterDTO) {
     try

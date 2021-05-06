@@ -83,3 +83,19 @@ export async function Login(user: LoginDTO){
     }
 
 }
+
+export async function FindUserByEmail(email: string){
+
+    try{
+        const user = await knex('Usuario').column('IdUsuario', 'Nome', 'Email')
+        .where({Email : email})
+        .select();
+    
+        return user[0];
+    }
+    catch(err)
+    {
+        throw err;
+    }
+
+}
