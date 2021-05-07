@@ -1,6 +1,6 @@
 
-import { Login as LoginOng} from "../Data/Repository/OngRepository";
-import { Login as LoginUser,FindUserByEmail,Update } from "../Data/Repository/UserRepository";
+import { Login as LoginOng, FindOngByEmail,Update as UpdateOng} from "../Data/Repository/OngRepository";
+import { Login as LoginUser,FindUserByEmail,Update as UpdateUser } from "../Data/Repository/UserRepository";
 import LoginDTO from "../Domain/DTO/Auth/LoginDTO";
 import { GenerateToken } from "../Middleware/Authentication/Auth";
 import { CloseConnection, OpenConnection } from "../Data/Database/UtilsDataBase";
@@ -8,6 +8,7 @@ import { SendEmail } from "../Services/EmailService";
 import  EmailEnviar from "../Domain/DTO/Auth/EmailEnviarDTO";
 import { GerarTokenAleatorio,IsStringNullOrEmpty } from "../Middleware/Utils/Validators";
 import UserModel from "../Domain/Model/UserModel";
+import OngModel from "../Domain/Model/OngModel";
 
 export async function DoLogin(user: LoginDTO){
 
@@ -75,41 +76,35 @@ export async function ForgotPassword(userEmail : string) {
     try{
 
         OpenConnection();
+
         let user = new UserModel();
+        let ong = new OngModel();
 
         user = await FindUserByEmail(userEmail);
+        ong =  await FindOngByEmail(userEmail);
 
-        if(user.IdUsuario != null){
+        if(user != null){
 
             const token = await GerarTokenAleatorio(6);
             user.TokenRecuperacao = token;
             
-            await Update(user);
+            await UpdateUser(user);
 
-            let email = new EmailEnviar();
-    
-            email.to = user.Email;
-            email.subject = '--------- Recuperar senha ---------';
-            email.html = EmailMessage(user.Nome, token);
-        
-            const EmailEnviado = await SendEmail(email);
+            const response = await EnviarToken(user.Email,user.Nome,user.TokenRecuperacao);
 
-            if(EmailEnviado.valid){
-                return{
-                    statusCode: 200,
-                    data: {
-                        message: "E-mail de recuperação de senha enviado para o email: " + userEmail
-                    }
-                }
-            }
-            else{
-                return{
-                    statusCode: 202,
-                    data: {
-                        message: "Não foi possível enviar o e-mail de recuperação para o email: " + userEmail
-                    }
-                }
-            }
+            return response;
+
+        }
+        else if(ong != null){
+
+            const token = await GerarTokenAleatorio(6);
+            ong.TokenRecuperacao = token;
+            
+            await UpdateOng(ong);
+
+            const response = await EnviarToken(ong.Email,ong.Nome,ong.TokenRecuperacao);
+            
+            return response;
 
         }
         else{
@@ -134,16 +129,6 @@ export async function ForgotPassword(userEmail : string) {
         CloseConnection();
     }
 
-    function EmailMessage(nome : string, token: string){
-        
-        const message = `Olá, <b>${nome} </b>! <br/>` +
-        'Recebemos uma solicitação de alteração de senha! Para a conta cadastrada nesse email. <br/><br/>' +
-        `Para avançar no processo de alteração de senha, por favor utilize o seguinte token: <b>${token}</b>`+
-        '<br/><br/>'+
-        'Atenciosamente, Equipe Adota Pet!';
-        
-        return message;
-    }
 }
 
 export async function UpdatePassword(userEmail: string, novaSenha: string, token: string) {
@@ -154,22 +139,69 @@ export async function UpdatePassword(userEmail: string, novaSenha: string, token
             return { statusCode: 204, data : { message: "O campo senha não pode ser nulo!" }};
         }
 
+        if(IsStringNullOrEmpty(token)){
+            return { statusCode: 204, data : { message: "O campo token não pode ser nulo!" }};
+        }
+
+        if(IsStringNullOrEmpty(userEmail)){
+            return { statusCode: 204, data : { message: "O campo userEmail não pode ser nulo!" }};
+        }
+        
         OpenConnection();
+
         let user = new UserModel();
+        let ong = new OngModel();
+
         user = await FindUserByEmail(userEmail);
-        console.log(user);
-        if(token == user.TokenRecuperacao){
+        ong = await FindOngByEmail(userEmail);
 
-            user.Senha = novaSenha;
-            await Update(user);
+        if(user != null){
+            if(token == user.TokenRecuperacao){
 
-            return {
-                statusCode: 200,
-                data : {
-                    message: "Senha Alterada com sucesso!"
+                user.Senha = novaSenha;
+                user.TokenRecuperacao = "";
+                await UpdateUser(user);
+    
+                return {
+                    statusCode: 200,
+                    data : {
+                        message: "Senha Alterada com sucesso!"
+                    }
+                }
+    
+            }
+            else{
+                return {
+                    statusCode: 400,
+                    data : {
+                        message: "Erro ao solicitar a alteração de senha! Token inválido!"
+                    }
                 }
             }
+        }
+        else if(ong != null){
+            if(token == ong.TokenRecuperacao){
 
+                ong.Senha = novaSenha;
+                ong.TokenRecuperacao = "";
+                await UpdateOng(ong);
+    
+                return {
+                    statusCode: 200,
+                    data : {
+                        message: "Senha Alterada com sucesso!"
+                    }
+                }
+    
+            }
+            else{
+                return {
+                    statusCode: 400,
+                    data : {
+                        message: "Erro ao solicitar a alteração de senha! Token inválido!"
+                    }
+                }
+            }
         }
         else{
             return {
@@ -190,5 +222,43 @@ export async function UpdatePassword(userEmail: string, novaSenha: string, token
     }
     finally{
         CloseConnection();
+    }
+}
+
+function EmailMessage(nome : string, token: string){
+        
+    const message = `Olá, <b>${nome} </b>! <br/>` +
+    'Recebemos uma solicitação de alteração de senha! Para a conta cadastrada nesse email. <br/><br/>' +
+    `Para avançar no processo de alteração de senha, por favor utilize o seguinte token: <b>${token}</b>`+
+    '<br/><br/>'+
+    'Atenciosamente, Equipe Adota Pet!';
+    
+    return message;
+}
+
+async function EnviarToken(userEmail: string, nome: string, token: string){
+    let email = new EmailEnviar();
+    
+    email.to = userEmail;
+    email.subject = '--------- Recuperar senha ---------';
+    email.html = EmailMessage(nome, token);
+
+    const EmailEnviado = await SendEmail(email);
+
+    if(EmailEnviado.valid){
+        return{
+            statusCode: 200,
+            data: {
+                message: "E-mail de recuperação de senha enviado para o email: " + userEmail
+            }
+        }
+    }
+    else{
+        return{
+            statusCode: 202,
+            data: {
+                message: "Não foi possível enviar o e-mail de recuperação para o email: " + userEmail
+            }
+        }
     }
 }

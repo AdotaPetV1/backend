@@ -108,7 +108,8 @@ export async function Update(Ong : OngUpdateDTO) {
             Municipio: Ong.Municipio,
             CEP: Ong.CEP,
             UF: Ong.UF,
-            CaixaPostal: Ong.CaixaPostal
+            CaixaPostal: Ong.CaixaPostal,
+            TokenRecuperacao: Ong.TokenRecuperacao
         });
         
     }
@@ -118,4 +119,20 @@ export async function Update(Ong : OngUpdateDTO) {
     finally{
 
     }
+}
+
+export async function FindOngByEmail(email: string){
+
+    try{
+        const ong = await knex('Organizacao').column('IdOrg', 'Nome', 'Email','TokenRecuperacao')
+        .where({Email : email})
+        .select();
+    
+        return ong[0];
+    }
+    catch(err)
+    {
+        throw err;
+    }
+
 }

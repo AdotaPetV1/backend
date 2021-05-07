@@ -11,4 +11,5 @@ export default class AnimalModel{
     Castrado!: BinaryType ;
     VacinacaoEmDia!: BinaryType ;
     IdOrgResponsavel!: number ;
+    TokenRecuperacao!: string;
 }

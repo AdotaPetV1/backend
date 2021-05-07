@@ -14,5 +14,6 @@ export class OngUpdateDTO {
     CEP!: string;
     UF!: string;
     CaixaPostal!: string;
+    TokenRecuperacao!: string;
 }
 

@@ -14,5 +14,5 @@ export default class OngModel{
     CEP!: string;
     UF!: string;
     CaixaPostal!: string;
-    
+    TokenRecuperacao!: string;
 }
