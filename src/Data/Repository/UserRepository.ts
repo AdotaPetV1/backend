@@ -1,5 +1,6 @@
 import LoginDTO from '../../Domain/DTO/Auth/LoginDTO';
 import UserRegisterDTO from '../../Domain/DTO/User/UserRegisterDTO';
+import UserModel from '../../Domain/Model/UserModel';
 import { knex } from '../Database/ConfigDataBase';
 
 export async function Register(user: UserRegisterDTO){
@@ -87,7 +88,7 @@ export async function Login(user: LoginDTO){
 export async function FindUserByEmail(email: string){
 
     try{
-        const user = await knex('Usuario').column('IdUsuario', 'Nome', 'Email')
+        const user = await knex('Usuario').column('IdUsuario', 'Nome', 'Email','TokenRecuperacao')
         .where({Email : email})
         .select();
     
@@ -98,4 +99,26 @@ export async function FindUserByEmail(email: string){
         throw err;
     }
 
+}
+
+export async function Update(user: UserModel){
+    try{
+        await knex('Usuario')
+        .where({IdUsuario : user.IdUsuario})
+        .update({
+            Nome : user.Nome,
+            CPF: user.CPF,
+            Email: user.Email,
+            Senha: user.Senha,
+            Numero: user.Numero,
+            Endereco: user.Endereco,
+            Municipio: user.Municipio,
+            CEP: user.CEP,
+            UF: user.UF,
+            TokenRecuperacao: user.TokenRecuperacao
+        });
+    }
+    catch(err){
+        throw err;
+    }
 }

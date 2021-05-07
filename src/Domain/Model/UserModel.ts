@@ -9,4 +9,5 @@ export default class UserModel{
     Municipio!: string;
     CEP!: string;
     UF!:string;
+    TokenRecuperacao!: string;
 }

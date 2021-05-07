@@ -1,12 +1,13 @@
 
 import { Login as LoginOng} from "../Data/Repository/OngRepository";
-import { Login as LoginUser,FindUserByEmail} from "../Data/Repository/UserRepository";
+import { Login as LoginUser,FindUserByEmail,Update } from "../Data/Repository/UserRepository";
 import LoginDTO from "../Domain/DTO/Auth/LoginDTO";
 import { GenerateToken } from "../Middleware/Authentication/Auth";
 import { CloseConnection, OpenConnection } from "../Data/Database/UtilsDataBase";
-import  { SendEmail } from "../Services/EmailService";
+import { SendEmail } from "../Services/EmailService";
 import  EmailEnviar from "../Domain/DTO/Auth/EmailEnviarDTO";
-import { EmitFlags } from "typescript";
+import { GerarTokenAleatorio,IsStringNullOrEmpty } from "../Middleware/Utils/Validators";
+import UserModel from "../Domain/Model/UserModel";
 
 export async function DoLogin(user: LoginDTO){
 
@@ -74,16 +75,22 @@ export async function ForgotPassword(userEmail : string) {
     try{
 
         OpenConnection();
+        let user = new UserModel();
 
-        const user = await FindUserByEmail(userEmail);
+        user = await FindUserByEmail(userEmail);
 
         if(user.IdUsuario != null){
+
+            const token = await GerarTokenAleatorio(6);
+            user.TokenRecuperacao = token;
+            
+            await Update(user);
 
             let email = new EmailEnviar();
     
             email.to = user.Email;
             email.subject = '--------- Recuperar senha ---------';
-            email.text = EmailMessage(user.Nome, '123456');
+            email.html = EmailMessage(user.Nome, token);
         
             const EmailEnviado = await SendEmail(email);
 
@@ -130,11 +137,58 @@ export async function ForgotPassword(userEmail : string) {
     function EmailMessage(nome : string, token: string){
         
         const message = `Olá, <b>${nome} </b>! <br/>` +
-        'Recebemos uma solicitação de alteração de senha! Para a conta cadastrada nesse email. <br/>' +
-        'Para avançar no processo de alteração de senha, por favor utilize o seguinte token: <br>KJADWE</b>'+
+        'Recebemos uma solicitação de alteração de senha! Para a conta cadastrada nesse email. <br/><br/>' +
+        `Para avançar no processo de alteração de senha, por favor utilize o seguinte token: <b>${token}</b>`+
         '<br/><br/>'+
         'Atenciosamente, Equipe Adota Pet!';
         
         return message;
+    }
+}
+
+export async function UpdatePassword(userEmail: string, novaSenha: string, token: string) {
+   
+    try{
+        
+        if(IsStringNullOrEmpty(novaSenha)){
+            return { statusCode: 204, data : { message: "O campo senha não pode ser nulo!" }};
+        }
+
+        OpenConnection();
+        let user = new UserModel();
+        user = await FindUserByEmail(userEmail);
+        console.log(user);
+        if(token == user.TokenRecuperacao){
+
+            user.Senha = novaSenha;
+            await Update(user);
+
+            return {
+                statusCode: 200,
+                data : {
+                    message: "Senha Alterada com sucesso!"
+                }
+            }
+
+        }
+        else{
+            return {
+                statusCode: 400,
+                data : {
+                    message: "Erro ao solicitar a alteração de senha! Token inválido!"
+                }
+            }
+        }
+    }
+    catch(err){
+        return{
+            statusCode: 500,
+            data: {
+                message: "Ocorreu um erro ao solicitar a alteração de senha!"
+            }
+        }
+    }
+    finally{
+        CloseConnection();
     }
 }
