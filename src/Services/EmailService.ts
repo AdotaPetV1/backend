@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import EmailEnviar from '../Domain/DTO/Auth/EmailEnviarDTO';
 
+//Criando serviço que enviar
 const remetente = nodemailer.createTransport({
     service: 'gmail',
     auth:{

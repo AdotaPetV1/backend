@@ -27,6 +27,7 @@ export async function ValidarEmail(email:string) {
         return true;
 }
 
+//Cria um token aleatório utilizado para recuperar a senha 
 export async function GerarTokenAleatorio(length : number){
     var result = '';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
