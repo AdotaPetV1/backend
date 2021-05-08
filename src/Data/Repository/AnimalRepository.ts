@@ -9,8 +9,13 @@ export async function SelectAll(UF: string){
 
         knex.initialize();
 
-        //Realizar JOIN com Organização para filtrar por UF
-        const result = await knex('Animal').select('IdAnimal','Nome','Raca','Idade');
+        const result = await knex('Animal')
+            .join('Organizacao','Animal.IdOrgResponsavel','Organizacao.IdOrg')
+            .select('Animal.IdAnimal','Animal.Nome',
+                'Animal.Raca','Animal.Idade',
+                'Organizacao.IdOrg','Organizacao.Nome as OrganizacaoNome',
+                'Organizacao.Email','Organizacao.UF','Organizacao.Municipio')
+                .where('Organizacao.UF', UF);
 
         return result;
 
@@ -30,7 +35,12 @@ export async function SelectByID(IdAnimal : number){
     try{
         knex.initialize();
 
-        const result = await knex('Animal').select('*').where('IdAnimal',IdAnimal);
+        //Retorna todos os campos da tabela animal mais os campos selecionados da tabela Organização
+        const result = await knex('Animal')
+        .join('Organizacao','Animal.IdOrgResponsavel','Organizacao.IdOrg')
+        .select('Animal.*','Organizacao.IdOrg','Organizacao.Nome as OrganizacaoNome',
+            'Organizacao.Email','Organizacao.UF','Organizacao.Municipio')
+            .where('IdAnimal',IdAnimal);
 
         return result;
 
