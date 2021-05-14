@@ -9,5 +9,11 @@
         "Vacinacao",
         "returning",
         "vakaquinha"
-    ]
+    ],
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/41f593ae-aa7b-45a6-bd0e-d23aca3436eb/resourceGroups/appsvc_linux_centralus_basic/providers/Microsoft.Web/sites/AdotaPet",
+    "appService.deploySubpath": "."
 }
