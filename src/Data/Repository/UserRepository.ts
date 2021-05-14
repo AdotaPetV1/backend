@@ -26,6 +26,7 @@ export async function Register(user: UserRegisterDTO){
     }   
     catch(err)
     {
+        console.log(err.message)
         throw "Ocorreu um erro ao cadastrar o usuário!" + err;
     }
 }

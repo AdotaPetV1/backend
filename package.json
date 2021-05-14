@@ -5,7 +5,8 @@
   "main": "src/App.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/App.ts --inspect"
+    "dev": "nodemon src/App.ts --inspect",
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
