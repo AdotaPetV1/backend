@@ -1,9 +1,9 @@
 export const knex = require('knex')({
     client: 'mssql',
     connection:{
-        host: 'adotapet.database.windows.net',
-        user: '',
-        password: '',
+        host: 'SEU_HOST',
+        user: 'SEU_USER',
+        password: 'SUA_SENHA',
         database: 'adota_pet',"options": {
             "enableArithAbort": true,
             "encrypt": true
