@@ -5,6 +5,21 @@ import { GetAll, PostAnimal,GetAnimalByID,DeleteAnimal,UpdateAnimal } from '../S
 import { ValidateToken } from '../Middleware/Authentication/Auth';
 
 router.get('/animal', async(req : Request ,res : Response)=>{
+        // #swagger.tags = ['Time']
+    // #swagger.description = 'Rota que retorna um time por ID'
+
+    /* #swagger.responses[200] = {
+        schema: { $ref: '#/definitions/Time' },
+        description: 'Retorna um time'
+    } */
+    
+    /*  #swagger.parameters['id'] = {
+          type: 'Integer',
+          description: 'Id do Time'
+      }
+
+    */
+
     ValidateToken(req,res);
     const { UF }  = req.body;
     const result = await GetAll(UF);
