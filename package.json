@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/App.ts --inspect",
-    "start": "node src/index.js",
+    "start": "ts-node src/App.ts",
     "swagger-autogen": "node src/Middleware/Configuration/Swagger.ts"
   },
   "repository": {

@@ -6,7 +6,7 @@ import { GetOngByID } from "../Data/Repository/OngRepository";
 import { CloseConnection, OpenConnection } from "../Data/Database/UtilsDataBase";
 
 export async function GetAll(UF: string){
-
+ 
     try{
     
         if(UF == null || UF == ""){
