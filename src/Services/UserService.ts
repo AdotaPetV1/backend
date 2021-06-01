@@ -32,8 +32,8 @@ export async function PostUser(user: UserRegisterDTO) {
             }
         }
 
-        if (user.UF.length >= 2)
-            return { statusCode: 400, message: "Favor inserir uma UF no formato válido!" }
+        if (user.UF.length > 2)
+            return { statusCode: 400, data : { message: "Favor inserir uma UF no formato válido!" }}
 
         const result = await Register(user);
 

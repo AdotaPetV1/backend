@@ -3,23 +3,9 @@ import {Request,Response} from 'express';
 const router = express.Router();
 import { GetAll, PostAnimal,GetAnimalByID,DeleteAnimal,UpdateAnimal } from '../Services/AnimalService';
 import { ValidateToken } from '../Middleware/Authentication/Auth';
+const multer = require('../Middleware/Utils/FileUpload');
 
 router.get('/animal', async(req : Request ,res : Response)=>{
-        // #swagger.tags = ['Time']
-    // #swagger.description = 'Rota que retorna um time por ID'
-
-    /* #swagger.responses[200] = {
-        schema: { $ref: '#/definitions/Time' },
-        description: 'Retorna um time'
-    } */
-    
-    /*  #swagger.parameters['id'] = {
-          type: 'Integer',
-          description: 'Id do Time'
-      }
-
-    */
-
     ValidateToken(req,res);
     const { UF }  = req.body;
     const result = await GetAll(UF);
@@ -40,7 +26,6 @@ router.get('/animal/:ID', async(req : Request ,res : Response) =>{
         data: result.data,
         message: result.message
     });
-
 });
 
 router.post('/animal', async(req : Request ,res : Response)=>{
@@ -51,7 +36,6 @@ router.post('/animal', async(req : Request ,res : Response)=>{
         data: result.data,
         message: result.message
     });
-
 });
 
 router.put('/animal', async(req : Request ,res : Response) =>{
@@ -62,7 +46,6 @@ router.put('/animal', async(req : Request ,res : Response) =>{
         data: result.data,
         message: result.message
     });
-
 });
 
 router.delete('/animal/:ID', async(req : Request ,res : Response)=>{
@@ -74,9 +57,23 @@ router.delete('/animal/:ID', async(req : Request ,res : Response)=>{
     res.status(result.statusCode).send({
         message: result.message
     });
-
 });
 
+router.post('/animal/upload', multer.single('image'), async(req: any, res: Response)=>{
+    console.log("OI")
+    console.log(req.file)
+    console.log(req.form)
+    
+    // Se houve sucesso no armazenamento
+    if (req.file) {
+        // Vamos imprimir na tela o objeto com os dados do arquivo armazenado
+        return res.send(req.file);
+    }
+
+    // Se o objeto req.file for undefined, ou seja, não houve sucesso, vamos imprimir um erro!
+    return res.send('Houve erro no upload!');
+
+})
 module.exports = router;
 
 

@@ -164,3 +164,7 @@ export async function DeleteAnimal(IdAnimal: number) {
         return { statusCode: 500, message: `Ocorreu um erro ao deletar o animal! Erro: ${err.toString()}`}
     }
 }
+
+export async function UploadFile(file: any){
+    
+}
