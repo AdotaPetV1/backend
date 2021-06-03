@@ -4,7 +4,7 @@ import { DoLogin,ForgotPassword, UpdatePassword } from "../Services/AuthService"
 
 const router = express.Router();
 
-router.get('/auth/login', async(req: Request,res: Response) =>{
+router.post('/auth/login', async(req: Request,res: Response) =>{
     
     const response = await DoLogin(req.body);
     
@@ -14,7 +14,7 @@ router.get('/auth/login', async(req: Request,res: Response) =>{
 
 });
 
-router.get('/auth/forgotPassword', async(req : Request, res: Response) =>{
+router.post('/auth/forgotPassword', async(req : Request, res: Response) =>{
     const { email }  =  req.body;
 
     const response = await ForgotPassword(email);
@@ -24,7 +24,7 @@ router.get('/auth/forgotPassword', async(req : Request, res: Response) =>{
 
 });
 
-router.get('/auth/UpdatePassword', async(req: Request, res: Response) => {
+router.post('/auth/UpdatePassword', async(req: Request, res: Response) => {
     const { email, senha, token } = req.body;
 
     const response = await UpdatePassword(email,senha,token);
