@@ -7,10 +7,25 @@ export async function Register(ong: OngRegisterDTO) {
 
     try {
 
-        const IdOng = await knex("Organizacao").insert(ong).returning('IdOng');
+        const IdOng = await knex("Organizacao").insert({
+            Nome: ong.Nome,
+            CNPJ: ong.CNPJ,
+            Email: ong.Email,
+            Senha: ong.Senha,
+            Numero: ong.Numero,
+            Site: ong.Site,
+            Instagram: ong.Instagram,
+            Facebook: ong.Facebook,
+            Vakaquinha: ong.Vakaquinha,
+            Endereco: ong.Endereco,
+            Municipio: ong.Municipio,
+            CEP: ong.CEP,
+            UF: ong.UF,
+            CaixaPostal: ong.CaixaPostal
+        }).returning('IdOrg');
+
         return {
-            valid: true,
-            IdOng: IdOng[0]
+            valid: true
         };
     }
     catch (err) {

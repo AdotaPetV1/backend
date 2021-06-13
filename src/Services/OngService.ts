@@ -32,8 +32,7 @@ export async function PostOng(ong: OngRegisterDTO) {
             return {
                 statusCode: 201,
                 data: {
-                    message: "Ong cadastrada!",
-                    IdUsuario: result.IdOng
+                    message: "Ong cadastrada!"
                 }
             }
         }
