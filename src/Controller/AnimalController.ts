@@ -6,7 +6,7 @@ import { ValidateToken } from '../Middleware/Authentication/Auth';
 const multer = require('../Middleware/Utils/FileUpload');
 
 router.get('/animal', async(req : Request ,res : Response)=>{
-    ValidateToken(req,res);
+    
     const { UF }  = req.body;
     const result = await GetAll(UF);
     
