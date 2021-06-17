@@ -31,7 +31,7 @@ export async function Register(user: UserRegisterDTO){
     }
 }
 
-export async function ValidEmail(email: string){
+export async function HasUserWithEmail(email: string){
 
     try{
 
@@ -40,9 +40,9 @@ export async function ValidEmail(email: string){
         }).select('IdUsuario');
 
         if(hasUser.length >= 1)
-            return false;
-        else
             return true;
+        else
+            return false;
     }
     catch(err){
         throw err;

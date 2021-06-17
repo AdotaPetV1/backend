@@ -1,5 +1,5 @@
-import { ValidEmail as ValidUserEmail,ValidCPF} from "../../Data/Repository/UserRepository";
-import { ValidEmail as ValidOngEmail } from "../../Data/Repository/OngRepository";
+import { HasUserWithEmail,ValidCPF} from "../../Data/Repository/UserRepository";
+import { HasOngWithEmail } from "../../Data/Repository/OngRepository";
 
 export function IsStringNullOrEmpty(value : string){
 
@@ -19,12 +19,12 @@ else
 //Valida se o e-mail já está cadastrado na base de dados
 export async function ValidarEmail(email:string) {
     
-    if(await ValidUserEmail(email) == false)
-        return false;
-    if(await ValidOngEmail(email) == false)
-        return false
-    else 
+    if(await HasOngWithEmail(email))
         return true;
+    if(await HasUserWithEmail(email))
+        return true;
+    else 
+        return false;
 }
 
 //Cria um token aleatório utilizado para recuperar a senha 

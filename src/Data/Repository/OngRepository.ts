@@ -7,7 +7,7 @@ export async function Register(ong: OngRegisterDTO) {
 
     try {
 
-        const IdOng = await knex("Organizacao").insert({
+       await knex("Organizacao").insert({
             Nome: ong.Nome,
             CNPJ: ong.CNPJ,
             Email: ong.Email,
@@ -22,18 +22,14 @@ export async function Register(ong: OngRegisterDTO) {
             CEP: ong.CEP,
             UF: ong.UF,
             CaixaPostal: ong.CaixaPostal
-        }).returning('IdOrg');
-
-        return {
-            valid: true
-        };
+        });
     }
     catch (err) {
         throw "Ocorreu um erro ao cadastrar a Ong" + err;
     }
 }
 
-export async function ValidEmail(email: string) {
+export async function HasOngWithEmail(email: string) {
 
     try {
 
@@ -42,9 +38,9 @@ export async function ValidEmail(email: string) {
         }).select('IdOrg');
 
         if (hasOng.length >= 1)
-            return false;
-        else
             return true;
+        else
+            return false;
     }
     catch (err) {
         throw err;
