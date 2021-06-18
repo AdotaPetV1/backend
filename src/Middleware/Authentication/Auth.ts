@@ -2,7 +2,7 @@
 
 const secret = 'AdotaPet'; 
 const jwt = require('jsonwebtoken');
-import { Request, Response } from 'express';
+import { Request, Response,NextFunction } from 'express';
 
 export function GenerateToken(ID: number, Email: string){
     
@@ -14,12 +14,15 @@ export function GenerateToken(ID: number, Email: string){
 }
 
 
-export function ValidateToken(req: Request, res: Response){
+export async function ValidateToken(req: Request, res: Response, next : NextFunction){
     const token = req.headers['x-access-token'];
-    if (!token) return res.status(401).json({ auth: false, message: 'Nenhum token fornecido!'});
-    
-    jwt.verify(token, secret, function(err: any) {
-      if (err) 
-        return res.status(500).json({ auth: false, message: 'Erro ao autenticar o token! Favor logar novamente na aplicação!' });
-    });
+    if (!token) 
+         return res.status(401).send({ auth: false, message: 'Nenhum token fornecido!'});
+    else{
+        jwt.verify(token, secret, function(err: any) {
+            if (err) 
+              return res.status(500).send({ auth: false, message: 'Erro ao autenticar o token! Favor logar novamente na aplicação!' });
+            next();
+        });
+    }
 }

@@ -6,7 +6,7 @@ import { ValidateToken } from '../Middleware/Authentication/Auth';
 const multer = require('../Middleware/Utils/FileUpload');
 
 router.get('/animal', async(req : Request ,res : Response)=>{
-    
+
     const { UF }  = req.body;
     const result = await GetAll(UF);
     
@@ -16,8 +16,7 @@ router.get('/animal', async(req : Request ,res : Response)=>{
     });
 });
 
-router.get('/animal/:ID', async(req : Request ,res : Response) =>{
-    ValidateToken(req,res);
+router.get('/animal/:ID', ValidateToken , async(req : Request ,res : Response) =>{
     const { ID } = req.params;
 
     const result = await GetAnimalByID(Number(ID));
@@ -26,10 +25,10 @@ router.get('/animal/:ID', async(req : Request ,res : Response) =>{
         data: result.data,
         message: result.message
     });
+    
 });
 
-router.post('/animal', async(req : Request ,res : Response)=>{
-    ValidateToken(req,res);
+router.post('/animal',ValidateToken, async(req : Request ,res : Response)=>{
     const result = await PostAnimal(req.body);
 
     res.status(result.statusCode).send({
@@ -38,8 +37,7 @@ router.post('/animal', async(req : Request ,res : Response)=>{
     });
 });
 
-router.put('/animal', async(req : Request ,res : Response) =>{
-    ValidateToken(req,res);
+router.put('/animal', ValidateToken, async(req : Request ,res : Response) =>{
     const result = await UpdateAnimal(req.body);
 
     res.status(result.statusCode).send({
@@ -48,8 +46,8 @@ router.put('/animal', async(req : Request ,res : Response) =>{
     });
 });
 
-router.delete('/animal/:ID', async(req : Request ,res : Response)=>{
-    ValidateToken(req,res);
+router.delete('/animal/:ID', ValidateToken, async(req : Request ,res : Response)=>{
+
     const { ID } = req.params;
 
     const result = await DeleteAnimal(Number(ID));
@@ -59,7 +57,7 @@ router.delete('/animal/:ID', async(req : Request ,res : Response)=>{
     });
 });
 
-router.post('/animal/upload', multer.single('image'), async(req: any, res: Response)=>{
+router.post('/animal/upload', ValidateToken, multer.single('image'), async(req: any, res: Response)=>{
     console.log("OI")
     console.log(req.file)
     console.log(req.form)
