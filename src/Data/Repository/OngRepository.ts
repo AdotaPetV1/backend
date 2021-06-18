@@ -47,25 +47,6 @@ export async function HasOngWithEmail(email: string) {
     }
 }
 
-export async function ValidCPF(CNPJ: string) {
-
-    try {
-
-        const hasOng = await knex('Organizacao').where({
-            CNPJ: CNPJ
-        }).select('IdOng');
-
-        if (hasOng.length >= 1)
-            return false;
-        else
-            return true;
-    }
-    catch (err) {
-        throw err;
-    }
-
-}
-
 export async function Login(ong: LoginDTO) {
 
     try {
