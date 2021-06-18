@@ -128,3 +128,9 @@ export async function FindOngByEmail(email: string){
     }
 
 }
+
+export async function GetAllOng(){
+    const ong = await knex('Organizacao').select();
+
+    return ong;
+}

@@ -1,6 +1,6 @@
 import express from 'express';
 import { Request,Response } from 'express';
-import { GetById, PostOng,PutOrg } from '../Services/OngService';
+import { GetAll, GetById, PostOng,PutOrg } from '../Services/OngService';
 const router = express.Router();
 
 router.post('/ong', async (req: Request, res: Response) => {
@@ -16,11 +16,15 @@ router.put('/ong', async(req : Request, res: Response) => {
 
     res.status(response.statusCode).send({
         data: response.data
-    })
+    });
 });
 
 router.get('/ong', async(req: Request, res: Response) =>{
-
+    const response = await GetAll();
+    
+    res.status(response.statusCode).send({
+        data: response.data
+    });
 });
 
 router.get('/ong/:ID', async(req: Request, res: Response) =>{
