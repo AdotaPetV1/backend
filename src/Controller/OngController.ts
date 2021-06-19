@@ -1,6 +1,6 @@
 import express from 'express';
 import { Request,Response } from 'express';
-import { GetAll, GetById, PostOng,PutOrg } from '../Services/OngService';
+import { Delete, GetAll, GetById, PostOng,PutOrg } from '../Services/OngService';
 const router = express.Router();
 
 router.post('/ong', async (req: Request, res: Response) => {
@@ -39,7 +39,13 @@ router.get('/ong/:ID', async(req: Request, res: Response) =>{
 });
 
 router.delete('/ong/:ID', async(req: Request, res: Response) =>{
-    
+    const { ID } = req.params;
+
+    const response = await Delete(Number(ID));
+
+    res.status(response.statusCode).send({
+        data: response.data
+    });
 });
 
 module.exports = router;

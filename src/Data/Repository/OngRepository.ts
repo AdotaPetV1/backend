@@ -134,3 +134,15 @@ export async function GetAllOng(){
 
     return ong;
 }
+
+export async function DeleteONG(IdOrg : number) {
+    
+    try{
+        //Talvez depois vamos ter que validar se esse animal está ligado a alguém ou algo assim
+        await knex('Organizacao').where('IdOrg', IdOrg).del()
+
+    }
+    catch(err){
+        throw err;
+    }
+}

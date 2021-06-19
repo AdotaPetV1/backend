@@ -2,6 +2,7 @@
 import { knex } from "../Database/ConfigDataBase";
 import AnimalRegisterDTO  from "../../Domain/DTO/Animal/AnimalRegisterDTO";
 import AnimalUpdateDTO from "../../Domain/DTO/Animal/AnimalUpdateDTO";
+import { IsNullOrEmpty } from "../../Middleware/Utils/Validators";
 
 export async function SelectAll(UF: string){
 
@@ -113,5 +114,24 @@ export async function Delete(IdAnimal : number) {
     }
     finally{
         knex.destroy()
+    }
+}
+
+export async function HasAnimalWithOng(IdOng: number) {
+    try{
+
+        const hasOng = await knex('Animal').where({
+            IdOrgResponsavel: IdOng
+        }).select('IdOrgResponsavel');
+
+        if(IsNullOrEmpty(hasOng) || hasOng.length == 0){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }   
+    catch(err){
+        throw err;
     }
 }

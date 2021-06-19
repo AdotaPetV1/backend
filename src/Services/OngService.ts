@@ -1,9 +1,10 @@
 import { OngRegisterDTO } from "../Domain/DTO/Ong/OngRegisterDTO";
 import { OngUpdateDTO} from "../Domain/DTO/Ong/OngUpdateDTO";
-import { Register, Update,GetOngByID, GetAllOng } from "../Data/Repository/OngRepository";
+import { Register, Update,GetOngByID, GetAllOng, DeleteONG } from "../Data/Repository/OngRepository";
 import { OpenConnection, CloseConnection } from "../Data/Database/UtilsDataBase";
 import { IsStringNullOrEmpty, IsNullOrEmpty, ValidarEmail} from "../Middleware/Utils/Validators";
 import { CreateResponse } from "../Middleware/Utils/HttpUtils";
+import { HasAnimalWithOng } from "../Data/Repository/AnimalRepository";
 
 export async function PostOng(ong: OngRegisterDTO) {
     try {
@@ -116,6 +117,8 @@ export async function PutOrg(ong: OngUpdateDTO) {
 export async function GetById(ID : number) {
     try{
         
+        OpenConnection();
+
         if(IsNullOrEmpty(ID)){
             return CreateResponse(200, "O campo ID não pode ser null",null);
         }
@@ -130,21 +133,51 @@ export async function GetById(ID : number) {
     catch(err){
         return CreateResponse(500, "Ocorreu um erro ao tentar buscar a ong pelo ID!" + err.message, null);
     }
+    finally{
+        CloseConnection();
+    }
 }
 
 export async function GetAll() {
     try{
 
+        OpenConnection();
+
         const result = await GetAllOng();
 
         return CreateResponse(200, "", result);
-        
+
     }
     catch(err){
         return CreateResponse(500, "Ocorreu um erro ao tentar buscar a ong pelo ID!" + err.message, null);
     }
+    finally{
+        CloseConnection();
+    }
 }
 
-export async function Delete(id: number) {
-    
+export async function Delete(ID: number) {
+
+    try{
+
+        OpenConnection();
+
+        if(IsNullOrEmpty(ID)){
+            return CreateResponse(400, "Favor passar um ID válido!",null);
+        }
+
+        const hasAnimalRegister = await HasAnimalWithOng(ID);
+
+        if(hasAnimalRegister)
+            return CreateResponse(200, "Não foi possível excluir a ONG, pois existem animais vinculados a ela!", null);
+
+        await DeleteONG(ID);
+        return CreateResponse(200, "ONG excluída com sucesso!", null);
+    }
+    catch(err){
+        return CreateResponse(500, "Ocorreu um erro ao tentar deletar a ONG!", null);
+    }
+    finally{
+        CloseConnection();
+    }
 }
