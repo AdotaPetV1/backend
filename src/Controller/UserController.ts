@@ -1,5 +1,6 @@
 import express from 'express';
 import { Request, Response } from 'express';
+import { ValidateToken } from '../Middleware/Authentication/Auth';
 import { PostUser, UpdateUser,DeleteUser } from '../Services/UserService';
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.post('/user/register', async (req: Request, res: Response) => {
     })
 });
 
-router.put('/user', async (req: Request, res: Response) => {
+router.put('/user', ValidateToken , async (req: Request, res: Response) => {
 
     const response = await UpdateUser(req.body);
 
@@ -22,7 +23,7 @@ router.put('/user', async (req: Request, res: Response) => {
 
 });
 
-router.delete('/user/:ID', async(req: Request, res: Response) => {
+router.delete('/user/:ID', ValidateToken , async(req: Request, res: Response) => {
     
     const { ID } = req.params;
 

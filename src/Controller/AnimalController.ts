@@ -16,7 +16,7 @@ router.get('/animal', async(req : Request ,res : Response)=>{
     });
 });
 
-router.get('/animal/:ID', ValidateToken , async(req : Request ,res : Response) =>{
+router.get('/animal/:ID',  async(req : Request ,res : Response) =>{
     const { ID } = req.params;
 
     const result = await GetAnimalByID(Number(ID));
