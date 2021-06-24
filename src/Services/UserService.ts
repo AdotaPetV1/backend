@@ -1,12 +1,10 @@
 import UserRegisterDTO from "../Domain/DTO/User/UserRegisterDTO";
-import { Register, ValidCPF } from "../Data/Repository/UserRepository";
+import { Delete, Register, Update,ValidCPF } from "../Data/Repository/UserRepository";
 import { OpenConnection, CloseConnection } from "../Data/Database/UtilsDataBase";
 import { ValidarEmail } from "../Middleware/Utils/Validators";
 import { IsNullOrEmpty, IsStringNullOrEmpty } from "../Middleware/Utils/Validators";
-import UserUpdateDTO from "../Domain/DTO/User/UserUpdateDTO"
-import { Update } from "../Data/Repository/UserRepository"
 import UserModel from "../Domain/Model/UserModel";
-
+import { CreateResponse } from "../Middleware/Utils/HttpUtils";
 
 
 export async function PostUser(user: UserRegisterDTO) {
@@ -111,5 +109,25 @@ export async function UpdateUser(user: UserModel) {
             statusCode: 500,
             message: `Ocorreu um erro ao atualizar o Usuário! Erro: ${err.toString()}`
         }
+    }
+}
+
+export async function DeleteUser(ID: number) {
+    
+    try{
+        OpenConnection();
+
+        if(IsNullOrEmpty(ID)){
+            return CreateResponse(400, "Favor passar um ID válido!",null);
+        }
+
+        await Delete(ID);
+        return CreateResponse(200, "Usuário excluído com sucesso!", null);
+    }
+    catch(err){
+        return CreateResponse(500, "Ocorreu um erro ao tentar deletar a ONG!", null);
+    }
+    finally{
+        CloseConnection();
     }
 }

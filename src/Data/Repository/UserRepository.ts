@@ -123,3 +123,12 @@ export async function Update(user: UserModel){
         throw err;
     }
 }
+
+export async function Delete(ID: number) {
+    try{
+        await knex('Usuario').where('IdUsuario', ID).del();
+    }
+    catch(err){
+        throw err;
+    }
+}
