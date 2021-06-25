@@ -9,13 +9,6 @@ export async function GetAll(UF: string){
  
     try{
     
-        if(UF == null || UF == ""){
-            return {
-                statusCode: 400,
-                message: "UF não pode ser nula!"
-            }
-        }
-
         const result = await SelectAll(UF);
 
         return{

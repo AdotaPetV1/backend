@@ -9,14 +9,24 @@ export async function SelectAll(UF: string){
     try{
 
         knex.initialize();
-
-        const result = await knex('Animal')
+        let result = null;
+        if(IsNullOrEmpty(UF)){
+            result = await knex('Animal')
+            .join('Organizacao','Animal.IdOrgResponsavel','Organizacao.IdOrg')
+            .select('Animal.IdAnimal','Animal.Nome',
+                'Animal.Raca','Animal.Idade',
+                'Organizacao.IdOrg','Organizacao.Nome as OrganizacaoNome',
+                'Organizacao.Email','Organizacao.UF','Organizacao.Municipio');
+        }else{
+            result = await knex('Animal')
             .join('Organizacao','Animal.IdOrgResponsavel','Organizacao.IdOrg')
             .select('Animal.IdAnimal','Animal.Nome',
                 'Animal.Raca','Animal.Idade',
                 'Organizacao.IdOrg','Organizacao.Nome as OrganizacaoNome',
                 'Organizacao.Email','Organizacao.UF','Organizacao.Municipio')
                 .where('Organizacao.UF', UF);
+        }
+
 
         return result;
 
