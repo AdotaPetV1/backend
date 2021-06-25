@@ -40,7 +40,14 @@
     "tedious": "^11.0.6",
     "ts-node": "^10.0.0",
     "validator": "^13.5.2",
-    "typescript": "^4.2.4"
+    "typescript": "^4.2.4",
+    "@types/bcrypt": "^3.0.0",
+    "@types/cors": "^2.8.10",
+    "@types/jsonwebtoken": "^8.5.1",
+    "@types/node": "^14.17.0",
+    "@types/nodemailer": "^6.4.1",
+    "cors": "^2.8.5",
+    "swagger-autogen": "^2.8.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
