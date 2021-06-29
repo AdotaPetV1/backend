@@ -125,7 +125,7 @@ export async function DeleteUser(ID: number) {
         return CreateResponse(200, "Usuário excluído com sucesso!", null);
     }
     catch(err){
-        return CreateResponse(500, "Ocorreu um erro ao tentar deletar a ONG!", null);
+        return CreateResponse(500, "Ocorreu um erro ao tentar deletar o usuário!", null);
     }
     finally{
         CloseConnection();

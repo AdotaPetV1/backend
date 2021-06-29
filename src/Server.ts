@@ -6,7 +6,7 @@ const cors = require('cors');
 
 //Documentação
 const SwaggerUI = require('swagger-ui-express');
-const SwaggerDocument = require('./Middleware/Configuration/SwaggerOptions.json');
+const SwaggerDocument = require('../SwaggerOptions.json');
 
 const application = express();
 
