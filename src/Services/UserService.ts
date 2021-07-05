@@ -11,7 +11,7 @@ export async function PostUser(user: UserRegisterDTO) {
     try {
         OpenConnection();
         let EmailValido = await ValidarEmail(user.Email);
-        if (!EmailValido) {
+        if (EmailValido) {
             return {
                 statusCode: 200,
                 data: {
@@ -21,7 +21,7 @@ export async function PostUser(user: UserRegisterDTO) {
         }
 
         let CPFValido = await ValidCPF(user.CPF);
-        if (CPFValido == false) {
+        if (CPFValido) {
             return {
                 statusCode: 200,
                 data: {

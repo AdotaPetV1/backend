@@ -1,6 +1,6 @@
 const application = require('./Server');
 
-application.listen(process.env.PORT || 8082, () =>{
-    console.log("Aplicação rodando em : http://localhost:8082/api/docs")
+application.listen(process.env.PORT || 8080, () =>{
+    console.log("Aplicação rodando em : http://localhost:8080/api/docs")
 });
 

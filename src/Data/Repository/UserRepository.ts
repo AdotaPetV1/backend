@@ -58,9 +58,9 @@ export async function ValidCPF(CPF: string){
         }).select('IdUsuario');
 
         if(hasUser.length >= 1)
-            return false;
-        else
             return true;
+        else
+            return false;
     }
     catch(err){
         throw err;
